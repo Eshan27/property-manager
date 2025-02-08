@@ -1,6 +1,5 @@
 const propertyData = [
     {
-      id: 1,
       name: "Sunny Side Villa",
       city: "Toronto",
       owner: "Alice Johnson",
@@ -10,7 +9,6 @@ const propertyData = [
       location: { latitude: 43.65107, longitude: -79.347015 },
     },
     {
-      id: 2,
       name: "Urban Loft",
       city: "Vancouver",
       owner: "Bob Smith",
@@ -20,7 +18,6 @@ const propertyData = [
       location: { latitude: 49.282729, longitude: -123.120738 },
     },
     {
-      id: 3,
       name: "Lakeview Retreat",
       city: "Montreal",
       owner: "Carla Martinez",
@@ -30,7 +27,6 @@ const propertyData = [
       location: { latitude: 45.501689, longitude: -73.567256 },
     },
     {
-      id: 4,
       name: "Downtown Condo",
       city: "Calgary",
       owner: "David Green",
@@ -40,7 +36,6 @@ const propertyData = [
       location: { latitude: 51.044733, longitude: -114.071883 },
     },
     {
-      id: 5,
       name: "Maplewood Estate",
       city: "Toronto",
       owner: "Evelyn Bennett",
@@ -50,7 +45,6 @@ const propertyData = [
       location: { latitude: 43.70011, longitude: -79.4163 },
     },
     {
-      id: 6,
       name: "Seaside Cottage",
       city: "Vancouver",
       owner: "Michael Wright",
@@ -60,7 +54,6 @@ const propertyData = [
       location: { latitude: 49.25044, longitude: -123.137 },
     },
     {
-      id: 7,
       name: "Heritage Home",
       city: "Ottawa",
       owner: "Olivia King",
@@ -70,7 +63,6 @@ const propertyData = [
       location: { latitude: 45.42153, longitude: -75.69719 },
     },
     {
-      id: 8,
       name: "Skyline Residence",
       city: "Calgary",
       owner: "Nathan Rivera",
@@ -80,7 +72,6 @@ const propertyData = [
       location: { latitude: 51.044733, longitude: -114.071883 },
     },
     {
-      id: 9,
       name: "Parkside Bungalow",
       city: "Montreal",
       owner: "Liam Fisher",
@@ -90,7 +81,6 @@ const propertyData = [
       location: { latitude: 45.509062, longitude: -73.554709 },
     },
     {
-      id: 10,
       name: "Bayview Penthouse",
       city: "Toronto",
       owner: "Sophia Taylor",
@@ -100,7 +90,6 @@ const propertyData = [
       location: { latitude: 43.65107, longitude: -79.347015 },
     },
     {
-      id: 11,
       name: "Forest Retreat",
       city: "Ottawa",
       owner: "William Harris",
@@ -110,7 +99,6 @@ const propertyData = [
       location: { latitude: 45.4215, longitude: -75.6972 },
     },
     {
-      id: 12,
       name: "Lakeside Paradise",
       city: "Vancouver",
       owner: "Isabella White",
@@ -120,7 +108,6 @@ const propertyData = [
       location: { latitude: 49.2827, longitude: -123.1207 },
     },
     {
-      id: 13,
       name: "Urban Haven",
       city: "Montreal",
       owner: "Charlotte Black",
@@ -130,7 +117,6 @@ const propertyData = [
       location: { latitude: 45.5088, longitude: -73.554 },
     },
     {
-      id: 14,
       name: "Horizon View Apartments",
       city: "Calgary",
       owner: "James Green",
@@ -140,7 +126,6 @@ const propertyData = [
       location: { latitude: 51.0447, longitude: -114.0719 },
     },
     {
-      id: 15,
       name: "Riverside Mansion",
       city: "Toronto",
       owner: "Emily Thompson",

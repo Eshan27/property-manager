@@ -1,17 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
-import propertyData from "@/lib/propertyData";
+// import propertyData from "@/lib/propertyData";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from '../ui/button';
+import PropertyMap from './PropertyMap';
+import dynamic from 'next/dynamic';
 
 function PropertyTable() {
-    const [properties, setProperties] = useState(propertyData);
+    const [properties, setProperties] = useState([]);
+    const [allProperties, setAllProperties] = useState([]); // Store all the fetched properties
     const [filters, setFilters] = useState({
         city: "",
         price: "",
         bedrooms: "",
         bathrooms: "",
     });
+    const PropertyMap = dynamic(() => import('./PropertyMap'), { ssr: false });
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const res = await fetch("/api/properties");
+                if (!res.ok) {
+                    throw new Error(`Error fetching properties: ${res.statusText}`);
+                }
+                const data = await res.json();
+                setProperties(data);
+                setAllProperties(data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchData();
+    }, []);
 
     // Handle filtering logic
     const handleFilterChange = (e) => {
@@ -23,7 +44,7 @@ function PropertyTable() {
     };
 
     const applyFilters = () => {
-        let filteredProperties = propertyData;
+        let filteredProperties = [...allProperties];
 
         if (filters.city) {
         filteredProperties = filteredProperties.filter(
@@ -57,10 +78,17 @@ function PropertyTable() {
     };
 
     const clearFilters = () => {
-        setProperties(propertyData)
-    }
+        setFilters({
+            city: "",
+            price: "",
+            bedrooms: "",
+            bathrooms: "",
+        });
+        setProperties(allProperties); // Reset properties to all fetched data
+    };
 
     return (
+        <>
         <motion.div
         initial={{ x: 1000, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
@@ -129,7 +157,7 @@ function PropertyTable() {
         <Table className="w-full border rounded-lg">
             <TableHeader>
             <TableRow>
-                <TableHead>ID</TableHead>
+                {/* <TableHead>ID</TableHead> */}
                 <TableHead>Name</TableHead>
                 <TableHead>City</TableHead>
                 <TableHead>Owner</TableHead>
@@ -140,8 +168,8 @@ function PropertyTable() {
             </TableHeader>
             <TableBody>
             {properties.map((property) => (
-                <TableRow key={property.id}>
-                <TableCell>{property.id}</TableCell>
+                <TableRow key={property._id}>
+                {/* <TableCell>{property.id}</TableCell> */}
                 <TableCell>{property.name}</TableCell>
                 <TableCell>{property.city}</TableCell>
                 <TableCell>{property.owner}</TableCell>
@@ -152,7 +180,15 @@ function PropertyTable() {
             ))}
             </TableBody>
         </Table>
+
+        {/* Property using Map */}
+        <div className='mt-5'>
+            <h1 className="text-xl font-bold mb-4">You can select look at your nest on the map!</h1>
+            <PropertyMap properties={properties} />
+        </div>
         </motion.div>
+
+    </>
     )
 }
 
