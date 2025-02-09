@@ -16,8 +16,8 @@ function AddProperty() {
     price: "",
     bedrooms: "",
     bathrooms: "",
-    latitude: "",
-    longitude: "",
+    // latitude: "",
+    // longitude: "",
   });
 
   const [message, setMessage] = useState(null);
@@ -35,11 +35,13 @@ function AddProperty() {
       ...formData,
       bedrooms: parseInt(formData.bedrooms),
       bathrooms: parseInt(formData.bathrooms),
-      location: {
-        latitude: parseFloat(formData.latitude),
-        longitude: parseFloat(formData.longitude),
-      },
+      // location: {
+      //   latitude: parseFloat(formData.latitude),
+      //   longitude: parseFloat(formData.longitude),
+      // },
     };
+
+    console.log(propertyData);
 
     try {
       const response = await fetch("/api/properties", {
@@ -66,8 +68,8 @@ function AddProperty() {
         price: "",
         bedrooms: "",
         bathrooms: "",
-        latitude: "",
-        longitude: "",
+        // latitude: "",
+        // longitude: "",
       });
     } catch (error) {
       console.error("Error adding property:", error);
@@ -133,7 +135,7 @@ function AddProperty() {
             />
           </div>
 
-          <div>
+          {/* <div>
             <Label htmlFor="latitude">Latitude</Label>
             <Input
               id="latitude"
@@ -155,7 +157,7 @@ function AddProperty() {
               onChange={handleInputChange}
               required
             />
-          </div>
+          </div> */}
           <DialogFooter>
             <Button type="submit">Add Property</Button>
             {message && (

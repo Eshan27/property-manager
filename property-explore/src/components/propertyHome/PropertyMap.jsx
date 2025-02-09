@@ -37,7 +37,7 @@ function PropertyMap({properties}) {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {properties.map((property) => (
-                property.location.latitude && property.location.longitude ? (
+                property.location?.latitude && property.location?.longitude ? (
                     <Marker 
                         key={property._id}
                         position={[property.location.latitude, property.location.longitude]}

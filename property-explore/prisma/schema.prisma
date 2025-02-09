@@ -27,14 +27,14 @@ model Property {
   name       String
   city       String
   owner      String
-  price      String
+  price      Float
   bedrooms   Int
   bathrooms  Int
-  location   Location
+  // location   Location
 }
-type Location {
-  latitude  Float
-  longitude Float
-}
+// type Location {
+//   latitude  Float
+//   longitude Float
+// }
 
 

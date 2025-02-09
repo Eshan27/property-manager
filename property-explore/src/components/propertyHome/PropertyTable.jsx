@@ -16,6 +16,7 @@ function PropertyTable() {
         bathrooms: "",
     });
     const PropertyMap = dynamic(() => import('./PropertyMap'), { ssr: false });
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         async function fetchData() {
@@ -74,6 +75,14 @@ function PropertyTable() {
         );
         }
 
+        if (searchQuery) {
+            filteredProperties = filteredProperties.filter((property) =>
+                property.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                property.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                property.owner.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        }
+
         setProperties(filteredProperties);
     };
 
@@ -84,6 +93,7 @@ function PropertyTable() {
             bedrooms: "",
             bathrooms: "",
         });
+        setSearchQuery("");
         setProperties(allProperties); // Reset properties to all fetched data
     };
 
@@ -93,7 +103,7 @@ function PropertyTable() {
         initial={{ x: 1000, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.6 }}
-        className="p-10"
+        className="p-10 max-w-full"
         >
         <h1 className="text-3xl font-bold mb-4">Property Details</h1>
         <div className="flex gap-4 mb-6">
@@ -149,12 +159,20 @@ function PropertyTable() {
             <option value="4">4</option>
             </select>
 
+            <input
+                type="text"
+                placeholder="Search by name, city or owner"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="border border-gray-300 rounded px-2 py-1"
+            />
+
             <Button onClick={applyFilters}>Apply Filters</Button>
             <Button onClick={clearFilters} className="bg-white text-black">Clear Filters</Button>
         </div>
 
 
-        <Table className="w-full border rounded-lg">
+        <Table className="max-w-full border rounded-lg">
             <TableHeader>
             <TableRow>
                 {/* <TableHead>ID</TableHead> */}
@@ -182,7 +200,7 @@ function PropertyTable() {
         </Table>
 
         {/* Property using Map */}
-        <div className='mt-5'>
+        <div className='mt-5 max-w-full'>
             <h1 className="text-xl font-bold mb-4">You can select look at your nest on the map!</h1>
             <PropertyMap properties={properties} />
         </div>
