@@ -9,17 +9,71 @@ import { Label } from "@/components/ui/label"
 
 function AddProperty() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [newProperty, setNewProperty] = useState({
-    name: "Sample Property",
-    description: "This is a description of the property",
-    price: "250,000",
-    location: "123 Main St, Cityville",
-  })
+  const [formData, setFormData] = useState({
+    name: "",
+    city: "",
+    owner: "",
+    price: "",
+    bedrooms: "",
+    bathrooms: "",
+    latitude: "",
+    longitude: "",
+  });
 
-  const properties = [
-    { name: "Property 1", description: "Description 1", price: "150,000", location: "Location 1" },
-    { name: "Property 2", description: "Description 2", price: "300,000", location: "Location 2" },
-  ]
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState(null);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const propertyData = {
+      ...formData,
+      bedrooms: parseInt(formData.bedrooms),
+      bathrooms: parseInt(formData.bathrooms),
+      location: {
+        latitude: parseFloat(formData.latitude),
+        longitude: parseFloat(formData.longitude),
+      },
+    };
+
+    try {
+      const response = await fetch("/api/properties", {
+        method: "POST",
+        body: JSON.stringify(propertyData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setMessage(errorData.error);
+        setMessageType("error");
+        return;
+      }
+
+      setMessage("Property added successfully!");
+      setMessageType("success");
+      setFormData({
+        name: "",
+        city: "",
+        owner: "",
+        price: "",
+        bedrooms: "",
+        bathrooms: "",
+        latitude: "",
+        longitude: "",
+      });
+    } catch (error) {
+      console.error("Error adding property:", error);
+      setMessage("Something went wrong");
+      setMessageType("error");    }
+  };
 
   const handleAddProperty = () => {
     // Add your logic for adding a property here
@@ -41,57 +95,82 @@ function AddProperty() {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name of residence
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {["name", "city", "owner", "price"].map((field) => (
+            <div key={field}>
+              <Label htmlFor={field}>{field.charAt(0).toUpperCase() + field.slice(1)}</Label>
+              <Input
+                id={field}
+                name={field}
+                value={formData[field]}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+          ))}
+
+          <div>
+            <Label htmlFor="bedrooms">Bedrooms</Label>
+            <Input
+              id="bedrooms"
+              name="bedrooms"
+              type="number"
+              value={formData.bedrooms}
+              onChange={handleInputChange}
+              required
+            />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="city" className="text-right">
-              City
-            </Label>
-            <Input id="city" value="city" type="text" className="col-span-3" />
+
+          <div>
+            <Label htmlFor="bathrooms">Bathrooms</Label>
+            <Input
+              id="bathrooms"
+              name="bathrooms"
+              type="number"
+              value={formData.bathrooms}
+              onChange={handleInputChange}
+              required
+            />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="owner" className="text-right">
-              Owner
-            </Label>
-            <Input id="owner" value="Pedro Duarte" type="text" className="col-span-3" />
+
+          <div>
+            <Label htmlFor="latitude">Latitude</Label>
+            <Input
+              id="latitude"
+              name="latitude"
+              type="text"
+              value={formData.latitude}
+              onChange={handleInputChange}
+              required
+            />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="price" className="text-right">
-              Price
-            </Label>
-            <Input id="price" value="100000" type="number" className="col-span-3" />
+
+          <div>
+            <Label htmlFor="longitude">Longitude</Label>
+            <Input
+              id="longitude"
+              name="longitude"
+              type="text"
+              value={formData.longitude}
+              onChange={handleInputChange}
+              required
+            />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Bedrooms
-            </Label>
-            <Input id="bedrooms" value="2" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="bathrooms" className="text-right">
-              Bathrooms
-            </Label>
-            <Input id="bathrooms" value="4" type="number" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="address" className="text-right">
-              Address
-            </Label>
-            <Input id="address" value="montreal rue st" type="text" className="col-span-3" />
-          </div>
+          <DialogFooter>
+            <Button type="submit">Add Property</Button>
+            {message && (
+              <p className={`mt-4 ${messageType === "success" ? "text-green-600" : "text-red-600"}`}>
+                {message}
+              </p>
+            )}
+            <DialogClose>
+            <Button type="button">
+              Close
+            </Button>
+            </DialogClose>
+          </DialogFooter>
+        </form>
         </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-          <DialogClose>
-          <Button type="button">
-            Close
-          </Button>
-          </DialogClose>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   )
