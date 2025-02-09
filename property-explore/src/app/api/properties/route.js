@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
 import { ObjectId } from "mongodb";
 import prisma from "@/lib/db";
+import { authOptions } from "../auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
 
 const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri, { useUnifiedTopology: true });
@@ -89,8 +91,7 @@ export async function PUT(request) {
 export async function DELETE(request) {
   try {
 
-    const session = await getServerSession(authOptions);  // Get the session
-
+    const session = await getServerSession(authOptions); 
     // Check if the user is an admin
     if (session?.user?.role !== "admin") {
       return NextResponse.json(
